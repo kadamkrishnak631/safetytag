@@ -1,0 +1,209 @@
+<!-- Full Smart Safety Tag Website (HTML + CSS + JS) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Safety Tag</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+    }
+    header {
+        background: #111;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+    }
+    nav {
+        display: flex;
+        justify-content: center;
+        background: #222;
+        padding: 10px;
+    }
+    nav button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        background: #3a6cf4;
+        color: #fff;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    nav button:hover {
+        background: #1f4ed8;
+    }
+    .page {
+        display: none;
+        padding: 20px;
+    }
+    #home {
+        display: block;
+    }
+    .card {
+        background: #fff;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #888;
+        border-radius: 5px;
+    }
+    button.action {
+        width: 100%;
+        padding: 12px;
+        background: #3a6cf4;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button.action:hover {
+        background: #1f4ed8;
+    }
+</style>
+</head>
+<body>
+
+<header>Smart Safety Tag</header>
+
+<nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('scan')">Scan QR</button>
+    <button onclick="showPage('owner')">Owner Login</button>
+</nav>
+
+<!-- Home Page -->
+<div id="home" class="page">
+    <div class="card">
+        <h2>Welcome to Smart Safety Tag</h2>
+        <p>Track your items safely using QR Tags.</p>
+    </div>
+</div>
+
+<!-- Scan Page -->
+<div id="scan" class="page">
+    <div class="card">
+        <h2>Scan Item</h2>
+        <video id="camera" width="100%" autoplay style="border-radius:10px; background:#000"></video>
+        <p>Camera active. Point the QR toward the camera.</p>
+        <textarea placeholder="Enter message to owner..."></textarea>
+        <button class="action">Send to Owner</button>
+    <h3>Payment</h3>
+<p><strong>Scan this QR to make payment:</strong></p>
+<img src="payment.jpeg" alt="Payment QR" style="width:200px; display:block; margin:auto; border:2px solid #000; border-radius:10px;" />
+<p><strong>Notice:</strong></p>
+<p>If you want **QR only → Pay ₹20**<br>If you want **Live Location feature → Pay ₹50**</p>
+<input type="number" id="amount" placeholder="Enter Amount" />
+<button class="action" onclick="paymentReceived()">Confirm Payment</button>
+<div id="payStatus"></div>
+
+<p><strong>Enter Payment Transaction ID:</strong></p>
+<input type="text" id="txnId" placeholder="Transaction ID" />
+<button class="action" id="activateBtn" disabled>Activate QR Generator</button>
+
+</div>
+</div>
+
+<script>
+function paymentReceived(){
+    let amt = document.getElementById('amount').value;
+    let status = document.getElementById('payStatus');
+    if(amt >= 20){
+        status.innerHTML = `<p style='color:green;'>Payment Received: ₹${amt}</p>`;
+        document.getElementById('activateBtn').disabled = false;
+    } else {
+        status.innerHTML = `<p style='color:red;'>Minimum ₹20 required.</p>`;
+    }
+}
+
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+}
+
+// CAMERA ON SCAN PAGE
+let video = null;
+function startCamera() {
+    video = document.getElementById("camera");
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        });
+    }
+}
+
+// Trigger camera when "Scan QR" tab is opened
+const scanBtn = document.querySelector('nav button:nth-child(2)');
+scanBtn.addEventListener('click', startCamera);
+</script>
+
+<!-- Owner Page -->
+<div id="owner" class="page">
+    <div class="card">
+        <h2>Owner Dashboard</h2>
+        <input type="text" placeholder="Full Name" />
+        <input type="text" placeholder="Contact Number" />
+        <input type="text" placeholder="WhatsApp Number" />
+        <input type="text" placeholder="Home Location" />
+        <input type="text" placeholder="Office Location" />
+        <button class="action">Save</button>
+
+        <h3>Add Item</h3>
+<input type="text" placeholder="Item Name" />
+<select>
+    <option>Bike Key</option>
+    <option>Car Key</option>
+    <option>Wallet</option>
+    <option>House Key</option>
+    <option>Office Key</option>
+    <option>Private Item</option>
+</select>
+
+<!-- PHOTO QR CREATOR -->
+<p><strong>Upload a Photo (Optional — Photo QR will be generated):</strong></p>
+<input type="file" accept="image/*" id="photoQR" />
+<button class="action">Generate Photo QR</button></button>
+    </div>
+</div>
+
+<script>
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+}
+</script>
+
+<footer style="background:#111; color:#fff; padding:20px; text-align:center; margin-top:40px;">
+    <p><strong>Website Developer:</strong> Krishna Dattatraya Kadam</p>
+    <p><strong>Qualification:</strong> Computer Engineering</p>
+    
+    <p><strong>Address:</strong> Solapur, Maharashtra, India</p>
+    <p><strong>Email:</strong> kadamkrishnak631@gmail.com</p>
+    <p>(If you need a professional website developed for your business, feel free to reach out.)</p>
+<script>
+function revealDev(){
+    const ok = confirm('Is this a genuine request for website development?');
+    if(ok){
+        alert('Developer Contact: 9082472382');
+    } else {
+        alert('Access Denied: Contact is protected.');
+    }
+}
+</script>
+</footer>
+</body>
+</html>
